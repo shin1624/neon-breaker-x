@@ -283,6 +283,8 @@ export default class Game {
     }
 
     // Update balls
+    // hadBallsは必ずupdate前に計算（update内でactive=falseになるため）
+    const hadFlyingBalls = this.balls.some(b => b.active && !b.onPaddle);
     for (const ball of this.balls) {
       if (ball.onPaddle) {
         ball.x = this.paddle.centerX;
@@ -358,11 +360,11 @@ export default class Game {
     for (const b of this.blocks) b.update(dt);
 
     // Balls lost
-    const hadBalls = this.balls.some(b => b.active);
-    const lostBalls = this.balls.filter(b => !b.active);
+    // hadFlyingBallsはupdate前に計算済み
     this.balls = this.balls.filter(b => b.active);
+    const flyingBalls = this.balls.filter(b => !b.onPaddle);
 
-    if (hadBalls && this.balls.length === 0) {
+    if (hadFlyingBalls && flyingBalls.length === 0 && !this.balls.some(b => b.onPaddle)) {
       this._ballsAllLost();
     }
 

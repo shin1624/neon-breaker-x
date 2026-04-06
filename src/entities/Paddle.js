@@ -37,17 +37,18 @@ export default class Paddle {
   update(dt, inputSystem) {
     this._pulse += dt * 3;
 
-    // Mouse / touch takes priority
+    // Mouse / touch sets position
     if (inputSystem.mouseActive) {
       this.x = inputSystem.mouseX - this.width / 2;
-    } else {
-      // Keyboard
-      if (inputSystem.isDown('ArrowLeft') || inputSystem.isDown('KeyA')) {
-        this.x -= PADDLE_SPEED * dt;
-      }
-      if (inputSystem.isDown('ArrowRight') || inputSystem.isDown('KeyD')) {
-        this.x += PADDLE_SPEED * dt;
-      }
+    }
+    // Keyboard ALWAYS works (additive on top of mouse)
+    if (inputSystem.isDown('ArrowLeft') || inputSystem.isDown('KeyA')) {
+      this.x -= PADDLE_SPEED * dt;
+      inputSystem.mouseActive = false; // キー押下時はマウス優先を解除
+    }
+    if (inputSystem.isDown('ArrowRight') || inputSystem.isDown('KeyD')) {
+      this.x += PADDLE_SPEED * dt;
+      inputSystem.mouseActive = false;
     }
 
     // Clamp

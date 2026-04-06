@@ -109,8 +109,8 @@ export default class PhysicsSystem {
     let side = 'top';
     if (minOverlap === overlapLeft)  { side = 'left';   ball.vx =  Math.abs(ball.vx); }
     else if (minOverlap === overlapRight) { side = 'right'; ball.vx = -Math.abs(ball.vx); }
-    else if (minOverlap === overlapTop)   { side = 'top';   ball.vy =  Math.abs(ball.vy); }
-    else                                  { side = 'bottom';ball.vy = -Math.abs(ball.vy); }
+    else if (minOverlap === overlapTop)   { side = 'top';   ball.vy = -Math.abs(ball.vy); } // 上面を上からヒット→上に反射
+    else                                  { side = 'bottom';ball.vy =  Math.abs(ball.vy); } // 下面を下からヒット→下に反射
 
     // MIRROR block — invert both components
     if (block.type === BLOCK_TYPES.MIRROR) {
